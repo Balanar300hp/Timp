@@ -44,7 +44,7 @@ void del()
 	}
 
 }
-int main()
+/*int main()
 {
 	setlocale(LC_CTYPE, "rus");
 	int num, val;
@@ -84,4 +84,4 @@ int main()
 		cout << exit[i] << endl;
 	system("pause");
 	return 0;
-}
+}*/
