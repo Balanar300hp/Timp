@@ -28,10 +28,12 @@ void push(int newvalue)
 		st = node;
 	}
 }
+/** \func int top() */
 int top()
 {
 	return st->value;
 }
+/** \func void del() */
 void del()
 {
 	if (st == NULL)
@@ -44,6 +46,7 @@ void del()
 	}
 
 }
+/** \func int main() */
 /*int main()
 {
 	setlocale(LC_CTYPE, "rus");
