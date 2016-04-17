@@ -1,0 +1,74 @@
+#include "stdafx.h"
+# include <iostream>
+#include <queue> 
+# include <conio.h>
+using namespace std;
+//=====НАША СТРУКТУРА========
+struct Node //Звено дерева
+{
+	int x,num; //То, что записываем в дерево
+	Node *l, *r; //Это указатели на новые звенья
+};
+
+void preOrderTravers(Node*& root) {//Прямой порядок
+	if (root) {
+		printf("%d ", root->num);
+		preOrderTravers(root->l);
+		preOrderTravers(root->r);
+	}
+}
+
+void inOrderTravers(Node*& root) {//Симметричный порядок
+	if (root) {
+		inOrderTravers(root->l);
+		printf("%d ", root->num);
+		inOrderTravers(root->r);
+	}
+}
+
+void postOrderTravers(Node*& root) {//Обратный порядок
+	if (root) {
+		postOrderTravers(root->l);
+		postOrderTravers(root->r);
+		printf("%d ", root->num);
+	}
+}
+
+
+
+void makeTree(Node** pp, int x,int index) {
+	if (!(*pp)) {
+		Node* p = new Node();
+		p->x = x;
+		p->num = index;
+		*pp = p;
+	}
+	else {
+		if ((*pp)->x > x)
+			makeTree(&((*pp)->l), x,index);
+		else
+			makeTree(&((*pp)->r), x,index);
+	}
+}
+
+
+int main()
+{
+	int s;
+	Node *Tree = NULL;  //Создаю указатель, тип которого = звено дерева и инициализирую его пустотой
+	for (int i = 0; i < 6; i++) {
+		cin >> s;
+		makeTree(&Tree,s,i);
+	};
+		
+	preOrderTravers(Tree); //Вывод на экран дерева. или просто обход дерева
+	cout << '\n';
+	postOrderTravers(Tree); //Вывод на экран дерева. или просто обход дерева
+	cout << '\n';
+	inOrderTravers(Tree); //Вывод на экран дерева. или просто обход дерева
+	cout << '\n';
+	
+	system("pause");
+}
+	
+
