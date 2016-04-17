@@ -1,74 +1,75 @@
 #include "stdafx.h"
-# include <iostream>
-#include <queue> 
-# include <conio.h>
+#include <iostream>
 using namespace std;
-//=====НАША СТРУКТУРА========
-struct Node //Звено дерева
-{
-	int x,num; //То, что записываем в дерево
-	Node *l, *r; //Это указатели на новые звенья
+class MyTree {
+private:
+	int* info;
+	int x;
+public:
+	MyTree(int* root, int index) : info(root), x(index) {};
+	void preorder(int num) const;//прямой
+	void postorder(int num) const;//обратный
+	void inorder(int num) const;//симметричный
 };
 
-void preOrderTravers(Node*& root) {//Прямой порядок
-	if (root) {
-		printf("%d ", root->num);
-		preOrderTravers(root->l);
-		preOrderTravers(root->r);
-	}
-}
-
-void inOrderTravers(Node*& root) {//Симметричный порядок
-	if (root) {
-		inOrderTravers(root->l);
-		printf("%d ", root->num);
-		inOrderTravers(root->r);
-	}
-}
-
-void postOrderTravers(Node*& root) {//Обратный порядок
-	if (root) {
-		postOrderTravers(root->l);
-		postOrderTravers(root->r);
-		printf("%d ", root->num);
+void MyTree::preorder(int num) const {
+	for (int i = 0; i < this->x; i++) {
+		if (this->info[i] == num) {
+			cout << i << ' ';
+			preorder(i);
+		}
 	}
 }
 
 
-
-void makeTree(Node** pp, int x,int index) {
-	if (!(*pp)) {
-		Node* p = new Node();
-		p->x = x;
-		p->num = index;
-		*pp = p;
+void MyTree::postorder(int num) const {
+	for (int i = 0; i < this->x; i++) {
+		if (this->info[i] == num) {
+			postorder(i);
+		}
 	}
-	else {
-		if ((*pp)->x > x)
-			makeTree(&((*pp)->l), x,index);
-		else
-			makeTree(&((*pp)->r), x,index);
+	if (num != -1) {
+		cout << num << ' ';
 	}
 }
 
 
-int main()
-{
-	int s;
-	Node *Tree = NULL;  //Создаю указатель, тип которого = звено дерева и инициализирую его пустотой
-	for (int i = 0; i < 6; i++) {
-		cin >> s;
-		makeTree(&Tree,s,i);
-	};
-		
-	preOrderTravers(Tree); //Вывод на экран дерева. или просто обход дерева
-	cout << '\n';
-	postOrderTravers(Tree); //Вывод на экран дерева. или просто обход дерева
-	cout << '\n';
-	inOrderTravers(Tree); //Вывод на экран дерева. или просто обход дерева
-	cout << '\n';
-	
+void MyTree::inorder(int num) const {
+	int x = 0;
+	for (int i = 0; i < this->x; i++) {
+		if (this->info[i] == num) {
+			inorder(i);
+			if ((!x) && (num != -1)) {
+				cout << num << ' ';
+			}
+			x++;
+		}
+	}
+	if (x == 0) {
+		cout << num << ' ';
+	}
+}
+
+int main() {
+	int n;
+	cin >> n;
+	int* tree = new int[n];
+	for (int i = 0; i < n; i++) {
+		cin >> tree[i];
+	}
+
+	MyTree t(tree, n);
+
+	t.preorder(-1);
+	cout << endl;
+
+	t.postorder(-1);
+	cout << endl;
+
+	t.inorder(-1);
+	cout << endl;
+
+	delete[] tree;
 	system("pause");
+	return 0;
 }
-	
-
