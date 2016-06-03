@@ -5,72 +5,72 @@
 using namespace std;
 
 int main() {
-	bool fOpen = false;				// Открылся комментарий
-	bool fClose = false;				// Закрылся ли комментарий 
-	bool fFunMult = false;				// Многострочен ли он
-	bool oneString = false;				// Или в одну строку
-	string sIn;					// Строка для чтения по строке
-	string result;					// Строка для однострочного комментария
-	string resultMultiline = "";			// Для многострочного комментария
+	bool fOpen = false;				// Открыт коммент
+	bool fClose = false;				// Закрыт
+	bool fFunMult = false;				// Многострочной
+	bool oneString = false;				// Монострочность
+	string sIn;					
+	string result;					
+	string resultMultiline = "";		
 	size_t pos;			
-	size_t posOp, posCl, posFun;			// Позиции открытия и закрытия комментария
-	int k = 0, n = 0, i = 0;			// k - счетчик комментариев
-	ifstream f_in("test.txt");			// Открытие файла на чтение
-	ofstream f_out("test.txt", fstream::app);	// Открытие файла на добавление
-	if (!f_in)					// Открыт ли файл?
+	size_t posOp, posCl, posFun;		
+	int k = 0, n = 0, i = 0;		
+	ifstream f_in("test.txt");		
+	ofstream f_out("test.txt", fstream::app);	
+	if (!f_in)					
 		cout << "Error!";
 
-	f_out << '\n';					// Добавление строки для более красивого вида выходного файла
-	while (f_in) {					// Пока не закончился файл
-		getline(f_in, sIn);			// Читаем его по строке
-		if (fFunMult == false) {		// Если комментарий не многострочен
-			posOp = sIn.find("/**");	// То ищем /**
+	f_out << '\n';				
+	while (f_in) {				
+		getline(f_in, sIn);		
+		if (fFunMult == false) {		
+			posOp = sIn.find("/**");	
 			if (posOp != std::string::npos) {
-				fOpen = true;		// И фиксируем открытие комментария
-				posCl = sIn.find("*/");	// Если в этой же строку нашелся закрывающий символ
+				fOpen = true;	
+				posCl = sIn.find("*/");	
 				if (posCl != std::string::npos) {
-					fClose = true;	// То фиксируем закрытие комментария
-					oneString = true;	// И то, что он в одну строку	
+					fClose = true;	
+					oneString = true;	
 				}
 				else
-					oneString = false;	// Или не в одну
+					oneString = false;	
 			}
 
-			if (oneString == true) {		// Если все же в одну, то
-				posFun = sIn.find("\\func");	// Ищем опознавательный тэг
+			if (oneString == true) {		
+				posFun = sIn.find("\\func");	
 				if (posFun != std::string::npos) {
-					k += 1;			// И увеличиваем количество комментариев на 1
-					result = sIn.substr(posFun + 6, posCl - (posFun + 6));	// Записываем содержимое после тэга в
-												// result
-					f_out << k << ". " << result << endl;			// И выводим в исходный файл
+					k += 1;			
+					result = sIn.substr(posFun + 6, posCl - (posFun + 6));	
+												
+					f_out << k << ". " << result << endl;			
 					i = 0;
 				}
-				oneString = false;		// Сбрасываем флаг
+				oneString = false;	
 			}
 
-			else if (fFunMult == false) {		// Если не в одну строку, то
-				posFun = sIn.find("\\func");	// Отмечаем позицию начала
+			else if (fFunMult == false) {		
+				posFun = sIn.find("\\func");	
 				if (posFun != std::string::npos) {
-					fFunMult = true;	// И отмечаем флагом
+					fFunMult = true;
 				}
 			}
 		}
-		if (fFunMult == true) {				// Если комментарий многострочен, то
-			posCl = sIn.find("*/");			// Ищем закрывающий символ в каждой новой строке
-			if (posCl != std::string::npos) {	// Если он нашелся, то
-				k += 1;				// Увеличиваем счетчик комментариев на 1
+		if (fFunMult == true) {			
+			posCl = sIn.find("*/");			
+			if (posCl != std::string::npos) {	
+				k += 1;				
 				f_out << k << ". " << resultMultiline << endl;	// И выводим его в файл
 				i = 0;
-				fFunMult = false;		// 
-				fClose = true;			// Сбрасываем флаги
-				fOpen = false;			// 
-				resultMultiline = "";  		// И строку
+				fFunMult = false;		
+				fClose = true;			
+				fOpen = false;			
+				resultMultiline = "";  		
 			}
 			else {
-				if (i == 0) {			// Зачем i?.. Не помню. Но так работает
-								// Добавляем каждую строку комментария к переменной
+				if (i == 0) {			
+								
 					resultMultiline = resultMultiline + sIn.substr(posFun + 6, posCl - (posFun + 6)) + '\n';
-					i++;			// Видимо, количество строк комментария
+					i++;		
 				}
 				else
 					resultMultiline = resultMultiline + sIn;
