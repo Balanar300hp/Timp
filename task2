@@ -59,7 +59,7 @@ int main() {
 			posCl = sIn.find("*/");			
 			if (posCl != std::string::npos) {	
 				k += 1;				
-				f_out << k << ". " << resultMultiline << endl;	// И выводим его в файл
+				f_out << k << ". " << resultMultiline << endl;	
 				i = 0;
 				fFunMult = false;		
 				fClose = true;			
